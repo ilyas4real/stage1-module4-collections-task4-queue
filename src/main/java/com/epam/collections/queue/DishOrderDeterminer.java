@@ -4,23 +4,29 @@ import java.util.*;
 
 public class DishOrderDeterminer {
     public List<Integer> determineDishOrder(int numberOfDishes, int everyDishNumberToEat) {
-        Deque<Integer> deque = new ArrayDeque<>();
-        List<Integer> list = new ArrayList<>();
-
+        Queue<Integer> dishQueue = new PriorityQueue<>();
+        ArrayList<Integer> eatenDishes = new ArrayList<>();
         for (int i = 1; i <= numberOfDishes; i++) {
-            deque.add(i);
+            dishQueue.add(i);
         }
-
-        int index = 0;
-        while (!deque.isEmpty()) {
-            for (int i : deque) {
-                index++;
-                if (index % everyDishNumberToEat == 0) {
-                    list.add(deque.poll());
-                    index = 0;
+        int originalSize = dishQueue.size();
+        int currentSize = originalSize;
+        int count = 1;
+        for (int i = 0; i < originalSize; i++) {
+            Queue<Integer> newDishQueue = new PriorityQueue<>();
+            for (int j = 1; j <= currentSize; j++) {
+                if (count % everyDishNumberToEat == 0) {
+                    eatenDishes.add(dishQueue.remove());
+                    count = 1;
+                } else {
+                    newDishQueue.add(dishQueue.remove());
+                    count++;
                 }
             }
+            currentSize = newDishQueue.size();
+            dishQueue.clear();
+            dishQueue.addAll(newDishQueue);
         }
-        return list;
+        return eatenDishes;
     }
 }
