@@ -7,8 +7,10 @@ public class PriorityQueueCreator {
         List<String> list = new ArrayList<>();
         list.addAll(firstList);
         list.addAll(secondList);
-        Collections.sort(list, String.CASE_INSENSITIVE_ORDER.reversed());
-        PriorityQueue<String> queue = new PriorityQueue<>(list);
+        Collections.sort(list);
+        Collections.reverse(list);
+        PriorityQueue<String> queue = new PriorityQueue<>(list.size(), Collections.reverseOrder());
+        queue.addAll(list);
         return queue;
     }
 }
